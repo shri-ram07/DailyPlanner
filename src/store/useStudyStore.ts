@@ -1,6 +1,7 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type { UserId, UserProgress } from '@/types';
+import { vercelKVStorage } from '@/lib/vercelStorage';
 
 interface StudyState {
   // Current user
@@ -107,6 +108,7 @@ export const useStudyStore = create<StudyState>()(
     }),
     {
       name: 'study-tracker-storage',
+      storage: createJSONStorage(() => vercelKVStorage),
       partialize: (state) => ({
         progress: state.progress,
         theme: state.theme,
